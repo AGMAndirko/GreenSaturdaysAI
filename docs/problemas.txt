@@ -1,4 +1,0 @@
-# Falta de datos
-- Solo tenemos mapas de immisión de 2019 y 2020
-- No hay datos de las estaciones en 2020. La lista de 2019 da error 404
-
