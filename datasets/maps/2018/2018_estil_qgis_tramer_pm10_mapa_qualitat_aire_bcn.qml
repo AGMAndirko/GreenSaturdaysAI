@@ -1,18 +1,3 @@
-0
-
-HTTP/1.1 200 OK
-Server: nginx
-Date: Thu, 17 Mar 2022 11:38:33 GMT
-Content-Type: application/octet-stream
-Content-Length: 18701
-Connection: keep-alive
-Pragma: no-cache
-Cache-Control: no-cache
-Accept-Ranges: bytes
-ETag: "1599416183.37-18701"
-Last-Modified: Sun, 06 Sep 2020 18:16:23 GMT
-Content-Range: bytes 0-18700/18701
-
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
 <qgis simplifyLocal="1" styleCategories="AllStyleCategories" labelsEnabled="0" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" minScale="100000000" simplifyDrawingHints="1" readOnly="0" version="3.14.15-Pi" maxScale="0" simplifyAlgorithm="0">
   <flags>
