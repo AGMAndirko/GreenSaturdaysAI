@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import sys
 import os
-from utils import integratemetadata
+from utils import *
+from visual import *
 
-test = integratemetadata()
-print(test)
+medidas = integratemetadata()
+
