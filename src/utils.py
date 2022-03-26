@@ -16,11 +16,7 @@ def integratemetadata():
 
 	# crea diccionario con código de contaminante y nombres, reemplaza la columna
 	dic = dict(meta[["Codi_Contaminant","Desc_Contaminant"]].values)
-	print(dic)
-	#medidas["CODI_CONTAMINANT"] = medidas["CODI_CONTAMINANT"].replace('nan', np.nan).fillna(0)
 	test = medidas["CODI_CONTAMINANT"]
-	print(set(test))
-	print(medidas["CODI_CONTAMINANT"])
 	medidas["CONTAMINANTE"] = medidas["CODI_CONTAMINANT"].replace(dic)
 	return medidas
 
@@ -32,10 +28,23 @@ def join_mapas():
 		- Contaminante
 	"""
 	maps_path = "../datasets/maps/"
-	año = ['2018', '2019']
-	contaminante = ['no2, pm10', 'pm2-5']
+	anyo = ['2018', '2019']
+	contaminante = ['no2', 'pm10', 'pm2-5']
 
+	final = pd.DataFrame()
+	
+	for i in anyo:
+		for k in contaminante:
+			path = maps_path+i+"/"+i+"_tramer_"+k+"_mapa_qualitat_aire_bcn.csv"
+			df = pd.read_csv(path)
+			df['año'] = i
+			df['contaminante'] = k
+			final = final.append(df)
 
-	return medidas
+	path = maps_path+"mapas_qualitat_aire_bcn.csv"
+	final.to_csv(path)
+	return final
+
+	#return test
 
 
