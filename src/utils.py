@@ -24,4 +24,18 @@ def integratemetadata():
 	medidas["CONTAMINANTE"] = medidas["CODI_CONTAMINANT"].replace(dic)
 	return medidas
 
+def join_mapas():
+	"""
+	join_mapas() genera un único csv para los csvs de /maps
+	Return: un único csv con dos columnas extra para diferenciar:
+		- Año
+		- Contaminante
+	"""
+	maps_path = "../datasets/maps/"
+	año = ['2018', '2019']
+	contaminante = ['no2, pm10', 'pm2-5']
+
+
+	return medidas
+
 
