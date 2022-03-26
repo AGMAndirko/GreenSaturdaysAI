@@ -45,6 +45,5 @@ def join_mapas():
 	final.to_csv(path)
 	return final
 
-	#return test
 
 
