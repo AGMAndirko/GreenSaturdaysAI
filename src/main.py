@@ -5,4 +5,4 @@ from utils import *
 from visual import *
 
 medidas = integratemetadata()
-
+join_mapas()
