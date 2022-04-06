@@ -31,7 +31,6 @@ def mediciones_unif():
 	Leemos y unificamos ambos dataframes forzando la misma estructura y tipo de datos:
 	'''
 
-
 	#Leemos los csv y convertimos a dataframe saltando las líneas que no tengan el mismo formato:
 	df_19 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/medidas/2018-19.csv",on_bad_lines='skip')
 	df_21 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/medidas/2020-21.csv",on_bad_lines='skip')
@@ -54,9 +53,26 @@ def mediciones_unif():
 
 		#Hay que separar las mediciones de los 3 contaminantes en distintas filas:
 
+	colo3 = colno2 = colpm10 = []
+	columns = df_19.columns.tolist()
+	colo3 = [e for e in columns if e not in ('valor_no2', 'valor_pm10')]
+	dfo3 = df_19[colo3]
+	colno2 = [e for e in columns if e not in ('valor_o3', 'valor_pm10')]
+	dfno2 = df_19[colno2]
+	colpm10 = [e for e in columns if e not in ('valor_no2', 'valor_o3')]
+	dfpm10 = df_19[colpm10]
+	dfo3['CODI_CONTAMINANT'] = 14
+	dfo3 = dfo3.rename({'valor_o3': 'H'},axis='columns')
+	dfno2['CODI_CONTAMINANT'] = 8
+	dfno2 = dfno2.rename({'valor_no2': 'H'}, axis='columns')
+	dfpm10['CODI_CONTAMINANT'] = 10
+	dfpm10 = dfpm10.rename({'valor_pm10': 'H'}, axis='columns')
+
+	#Formato final del df_19:
+	df_19 = pd.concat([dfo3,dfno2,dfpm10])
 
 	#Limpiamos y unificamos con descripción de estaciones el df del 21:
-	#df_21 = df_21.merge(df_estaciones_21, how='left', left_on="ESTACIO", right_on='Estacio')
+	df_21 = df_21.merge(df_estaciones_21, how='left', left_on="ESTACIO", right_on='Estacio')
 
 	print(df_19)
 
