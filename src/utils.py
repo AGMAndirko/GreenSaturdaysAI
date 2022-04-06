@@ -46,6 +46,8 @@ def join_mapas():
 	final.to_csv(path)
 	return final
 
+def mediciones_unif():
+
 	'''
 	Leemos y unificamos ambos dataframes forzando la misma estructura y tipo de datos:
 	'''
