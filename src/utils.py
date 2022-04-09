@@ -53,10 +53,10 @@ def mediciones_unif():
 	'''
 
 	#Leemos los csv y convertimos a dataframe saltando las líneas que no tengan el mismo formato:
-	df_19 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/medidas/2018-19.csv",on_bad_lines='skip')
-	df_21 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/medidas/2020-21.csv",on_bad_lines='skip')
-	df_estaciones_21 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/estaciones/2021/2021_qualitat_aire_estacions.csv")
-	df_estaciones_18 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/estaciones/2018/2018_qualitat_aire_estacions_bcn.csv")
+	df_19 = pd.read_csv("../datasets/medidas/2018-19.csv", on_bad_lines='skip')
+	df_21 = pd.read_csv("../GreenSaturdaysAI/datasets/medidas/2020-21.csv",on_bad_lines='skip')
+	df_estaciones_21 = pd.read_csv("../GreenSaturdaysAI/datasets/estaciones/2021/2021_qualitat_aire_estacions.csv")
+	df_estaciones_18 = pd.read_csv("../GreenSaturdaysAI/datasets/estaciones/2018/2018_qualitat_aire_estacions_bcn.csv")
 
 	#Unificamos dataframes y eliminamos las columnas que no aportan información:
 	df_21 = df_21.drop(["CODI_PROVINCIA", "PROVINCIA", "CODI_MUNICIPI", "MUNICIPI"], axis=1)
@@ -67,12 +67,12 @@ def mediciones_unif():
 	df_19 = df_19.merge(df_estaciones_18,how="left",left_on="codi_dtes", right_on='codi_dtes')
 	df_19 = df_19.drop(["codi_dtes","codi_eoi","zqa","Codi_Barri","Nom_Districte","dateTime"], axis=1)
 
-		#Formateamos las fechas para que case con el df de 2021:
+    #Formateamos las fechas para que case con el df de 2021:
 	df_19[["fecha","hora"]] = df_19.generat.str.split(" ",expand=True)
 	df_19[["DIA","MES","ANY"]] = df_19.fecha.str.split("/", expand=True)
 	df_19 = df_19.drop(["generat","qualitat_aire","hora_o3","hora_no2","hora_pm10","qualitat_o3","qualitat_no2","qualitat_pm10"], axis=1)
 
-		#Hay que separar las mediciones de los 3 contaminantes en distintas filas:
+	#Hay que separar las mediciones de los 3 contaminantes en distintas filas:
 
 	colo3 = colno2 = colpm10 = []
 	columns = df_19.columns.tolist()
@@ -95,6 +95,5 @@ def mediciones_unif():
 	#Limpiamos y unificamos con descripción de estaciones el df del 21:
 	df_21 = df_21.merge(df_estaciones_21, how='left', left_on="ESTACIO", right_on='Estacio')
 
-	print(df_19)
+	return df_19
 
-mediciones_unif()
