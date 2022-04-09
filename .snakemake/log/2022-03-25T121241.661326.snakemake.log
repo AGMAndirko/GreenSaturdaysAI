@@ -1,3 +1,0 @@
-SyntaxError:
-Not all output, log and benchmark files of rule downloads_estaciones contain the same wildcards. This is crucial though, in order to avoid that two or more jobs write to the same file.
-  File "/run/media/sanyi/c21e866e-0b3b-40be-a6ba-8cd9c93c1544/work/realwork/saturdaysai/project/GreenSaturdaysAI/Snakefile", line 43, in <module>
