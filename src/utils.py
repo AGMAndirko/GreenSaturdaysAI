@@ -4,23 +4,6 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 
-def integratemetadata():
-	"""
-	integratemetadata() arregla el problema de que en las medidas de 2020-21 los contaminantes salen por código en vez de por nombre propio.
-	devuelve una copia de las medidas de 2020-2021 con una columna nueva (CONTAMINANTE) con el nombre del contaminante
-	"""
-	medidas_str = "../datasets/medidas/"+"2020-21.csv"
-	medidas = pd.read_csv(medidas_str)
-	
-	meta = "../datasets/meta/qualitat_aire_contaminants.csv"
-	meta = pd.read_csv(meta)
-
-	# crea diccionario con código de contaminante y nombres, reemplaza la columna
-	dic = dict(meta[["Codi_Contaminant","Desc_Contaminant"]].values)
-	test = medidas["CODI_CONTAMINANT"]
-	medidas["CONTAMINANTE"] = medidas["CODI_CONTAMINANT"].replace(dic)
-	return medidas
-
 def join_mapas():
 	"""
 	join_mapas() genera un único csv para los csvs de /maps
@@ -49,16 +32,14 @@ def join_mapas():
 def mediciones_unif():
 
 	'''
-	Leemos y unificamos ambos dataframes forzando la misma estructura y tipo de datos:
+	Leemos y unificamos el dataseet de contaminantes con los datos de las estaciones y descripción de contaminante:
 	'''
 
 	#Leemos los csv y convertimos a dataframe saltando las líneas que no tengan el mismo formato:
 
-	df_21 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/medidas/2020-21.csv",on_bad_lines='skip')
-	df_estaciones_21 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/estaciones/2021/2021_qualitat_aire_estacions.csv")
-
-	df_21 = pd.read_csv("../GreenSaturdaysAI/datasets/medidas/2020-21.csv",on_bad_lines='skip')
-	df_estaciones_21 = pd.read_csv("../GreenSaturdaysAI/datasets/estaciones/2021/2021_qualitat_aire_estacions.csv")
+	df_21 = pd.read_csv("../datasets/medidas/"+"2020-21.csv")
+	df_estaciones_21 = pd.read_csv("../datasets/estaciones/2021/"+"2021_qualitat_aire_estacions.csv")
+	df_contaminantes = pd.read_csv("../datasets/meta/"+"qualitat_aire_contaminants.csv")
 
 	#Unificamos dataframes y eliminamos las columnas que no aportan información:
 	df_21 = df_21.drop(["CODI_PROVINCIA", "PROVINCIA", "CODI_MUNICIPI", "MUNICIPI"], axis=1)
@@ -67,9 +48,10 @@ def mediciones_unif():
 	#Limpiamos y unificamos con descripción de estaciones el df del 21:
 	df_21 = df_21.merge(df_estaciones_21, how='left', left_on="ESTACIO", right_on='Estacio')
 
-	#Limpiamos y unificamos con descripción de estaciones el df del 21:
-	df_21 = df_21.merge(df_estaciones_21, how='left', left_on="ESTACIO", right_on='Estacio')
+	#Sustituimos los contaminantes por sus descripciones:
+	df_21 = df_21.merge(df_contaminantes, how='left', left_on="CODI_CONTAMINANT", right_on='Codi_Contaminant')
+	df_21 = df_21.drop(["CODI_CONTAMINANT","Unitats"],axis=1)
 
 	return df_21
 
-mediciones_unif()
+df_jardin = pd.read_csv("../datasets/maps/"+"opendatabcn_cultura_parcs-i-jardins.csv")
