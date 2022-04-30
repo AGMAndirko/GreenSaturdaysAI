@@ -53,15 +53,26 @@ def mediciones_unif():
 	'''
 
 	#Leemos los csv y convertimos a dataframe saltando las líneas que no tengan el mismo formato:
+<<<<<<< HEAD
+	df_21 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/medidas/2020-21.csv",on_bad_lines='skip')
+	df_estaciones_21 = pd.read_csv("C:/Users/koke_/GreenSaturdaysAI/datasets/estaciones/2021/2021_qualitat_aire_estacions.csv")
+=======
 	df_19 = pd.read_csv("../datasets/medidas/2018-19.csv", on_bad_lines='skip')
 	df_21 = pd.read_csv("../GreenSaturdaysAI/datasets/medidas/2020-21.csv",on_bad_lines='skip')
 	df_estaciones_21 = pd.read_csv("../GreenSaturdaysAI/datasets/estaciones/2021/2021_qualitat_aire_estacions.csv")
 	df_estaciones_18 = pd.read_csv("../GreenSaturdaysAI/datasets/estaciones/2018/2018_qualitat_aire_estacions_bcn.csv")
+>>>>>>> origin
 
 	#Unificamos dataframes y eliminamos las columnas que no aportan información:
 	df_21 = df_21.drop(["CODI_PROVINCIA", "PROVINCIA", "CODI_MUNICIPI", "MUNICIPI"], axis=1)
 	df_estaciones_21 = df_estaciones_21.drop(["codi_eoi","Nom_districte","Codi_barri","zqa","Codi_districte","Clas_1"], axis=1)
 
+<<<<<<< HEAD
+	#Limpiamos y unificamos con descripción de estaciones el df del 21:
+	df_21 = df_21.merge(df_estaciones_21, how='left', left_on="ESTACIO", right_on='Estacio')
+
+mediciones_unif()
+=======
 	#Limpiamos y unificamos con descripción de estaciones el df del 19:
 	df_estaciones_18 = df_estaciones_18.drop(["zqa","codi_eoi","Codi_Districte", "Ocupacio_sol","Contaminant_1","Contaminant_2","Contaminant_3"], axis = 1)
 	df_19 = df_19.merge(df_estaciones_18,how="left",left_on="codi_dtes", right_on='codi_dtes')
@@ -97,3 +108,4 @@ def mediciones_unif():
 
 	return df_19
 
+>>>>>>> origin
