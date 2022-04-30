@@ -14,6 +14,12 @@ hours = ["H01","H02","H03","H04","H05","H06","H07","H08","H09","H10","H11","H12"
 long_mediciones = pd.melt(mediciones, id_vars=['ESTACIO', 'CONTAMINANTE', 'ANY','MES', 'DIA' ], value_vars=hours)
 
 print(long_mediciones.head())
-g = sns.FacetGrid(long_mediciones, col="ESTACIO", row="ANY")
-g.map(sns.barplot, x='CONTAMINANTE', y='value', data=long_mediciones)
-plt.savefig('delete.png', dpi=900)
+a = sns.FacetGrid(long_mediciones, col="ESTACIO", row="ANY")
+a.map(sns.barplot, x='CONTAMINANTE', y='value', data=long_mediciones)
+plt.savefig('any.png', dpi=900)
+
+#m = sns.FacetGrid(long_mediciones, col="ESTACIO", row="mes")
+#m.map(sns.barplot, x='CONTAMINANTE', y='value', data=long_mediciones)
+#plt.savefig('mes.png', dpi=900)
+
+
