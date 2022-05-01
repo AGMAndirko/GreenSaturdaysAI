@@ -54,4 +54,5 @@ def mediciones_unif():
 
 	return df_21
 
-df_jardin = pd.read_csv("../datasets/maps/"+"opendatabcn_cultura_parcs-i-jardins.csv")
+df_jardin = pd.read_json("../datasets/maps/opendatabcn_cultura_parcs-i-jardins-js.json")
+df_jardin
