@@ -69,8 +69,6 @@ def convert_fecha(cadena):
   return aaaa + '-' + mm + '-' + dd 
 
 def add_festivos_findes(df):
-  """
-  """
 
   # Creamos una columna que determuine las fecha en las que existia el covid
   df["covid"] = 0
@@ -80,8 +78,7 @@ def add_festivos_findes(df):
 
   df['festivo'] = 100
   df['festivo'] = df['fecha'].apply(lambda x: 1 if x in festivos else 0)
-
-    h = df.fecha.unique()
+  h = df.fecha.unique()
 
   inicio = pd.datetime.strptime('01/01/2020', '%d/%m/%Y')
   fin = pd.datetime.strptime('31/12/2021', '%d/%m/%Y')
@@ -99,7 +96,17 @@ def add_festivos_findes(df):
     else:
       aux_finde.append(0)
   # Comprobamos que tienen la misma longitud
-   dic_findes = dict(zip(aux_fecha , aux_finde))
-…
-      df = df.drop(columns= ['CODI_PROVINCIA', 'PROVINCIA', 'CODI_MUNICIPI', 'MUNICIPI','ANY', 'MES', 'DIA'])
-    return df  
+  dic_findes = dict(zip(aux_fecha , aux_finde))
+  # Reemplazamos las '/' por '-' de cara a la comparación
+  df['fecha'] = df['fecha'].apply(convert_fecha)
+  findes = []
+
+  for i in range(len(df.fecha)):
+    # Obtenemos la fecha
+      fecha = df.fecha[i]
+      findes.append(dic_findes.get(fecha))
+
+  df["findes"]=findes
+  df = df.drop(columns= ['CODI_PROVINCIA', 'PROVINCIA', 'CODI_MUNICIPI', 'MUNICIPI','ANY', 'MES', 'DIA'])
+
+  return df
