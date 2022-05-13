@@ -53,6 +53,3 @@ def mediciones_unif():
 	df_21 = df_21.drop(["CODI_CONTAMINANT","Unitats"],axis=1)
 
 	return df_21
-
-df_jardin = pd.read_json("../datasets/maps/opendatabcn_cultura_parcs-i-jardins-js.json")
-df_jardin
