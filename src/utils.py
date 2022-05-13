@@ -52,6 +52,7 @@ def mediciones_unif():
 
 	return df_21
 
+<<<<<<< HEAD
 def integratemetadata():
 	"""
 	integratemetadata() arregla el problema de que en las medidas de 2020-21 los contaminantes salen por código en vez de por nombre propio.
@@ -73,6 +74,8 @@ def integratemetadata():
 	medidas["CONTAMINANTE"] = medidas["CODI_CONTAMINANT"].replace(dic)
 	return medidas
 
+=======
+>>>>>>> origin/main
 def convert_fecha(cadena):
   '''
   Función que rellena los día y meses de un solo carácter para crear un formato de fecha aaaa-mm-dd
@@ -121,4 +124,8 @@ def add_festivos_findes(df):
    dic_findes = dict(zip(aux_fecha , aux_finde))
 …
       df = df.drop(columns= ['CODI_PROVINCIA', 'PROVINCIA', 'CODI_MUNICIPI', 'MUNICIPI','ANY', 'MES', 'DIA'])
+<<<<<<< HEAD
     return df  
+=======
+    return df  
+>>>>>>> origin/main
