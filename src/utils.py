@@ -53,3 +53,5 @@ def mediciones_unif():
 	df_21 = df_21.drop(["CODI_CONTAMINANT","Unitats"],axis=1)
 
 	return df_21
+
+

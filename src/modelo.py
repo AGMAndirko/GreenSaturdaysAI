@@ -1,7 +1,14 @@
 import pandas as pd
+import datetime
+import utils
 
+df = utils.mediciones_unif()
 
-df = pd.read_csv("/content/2020-21.csv")
+#obtenemos df mediciones
+
+df_cont = utils.mediciones_unif()
+
+df = pd.read_csv("../content/2020-21.csv")
 
 df["covid"] = 0
 df["fecha"] = df[["DIA", "MES", "ANY"]].astype(str).agg('/'.join, axis = 1)
@@ -14,7 +21,7 @@ df['festivo'] = 100
 df['festivo'] = df['fecha'].apply(lambda x: 1 if x in festivos else 0)
 
 #intentando sacar fines de semana también:
-[datetime.datetime.strptime(x, '%d/%m/%Y'),'%d/%m/%Y') for x in df['fecha']]
+#[datetime.datetime.strptime(x, '%d/%m/%Y'),'%d/%m/%Y') for x in df['fecha']]
 
 
 
