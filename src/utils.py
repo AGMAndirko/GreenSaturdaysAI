@@ -29,15 +29,15 @@ def join_mapas():
 	final.to_csv(path)
 	return final
 
-def mediciones_unif():
+def mediciones_unif(ruta1, ruta2, ruta3):
 	'''
 	Leemos y unificamos el dataseet de contaminantes con los datos de las estaciones y descripción de contaminante:
 	'''
 	#Leemos los csv y convertimos a dataframe saltando las líneas que no tengan el mismo formato:
 
-	df_21 = pd.read_csv("../datasets/medidas/"+"2020-21.csv")
-	df_estaciones_21 = pd.read_csv("../datasets/estaciones/2021/"+"2021_qualitat_aire_estacions.csv")
-	df_contaminantes = pd.read_csv("../datasets/meta/"+"qualitat_aire_contaminants.csv")
+	df_21 = pd.read_csv(ruta1+"2020-21.csv")
+	df_estaciones_21 = pd.read_csv(ruta2+"2021_qualitat_aire_estacions.csv")
+	df_contaminantes = pd.read_csv(ruta3+"qualitat_aire_contaminants.csv")
 
 	#Unificamos dataframes y eliminamos las columnas que no aportan información:
 	df_21 = df_21.drop(["CODI_PROVINCIA", "PROVINCIA", "CODI_MUNICIPI", "MUNICIPI"], axis=1)
@@ -65,11 +65,6 @@ def integratemetadata():
 
 	# crea diccionario con código de contaminante y nombres, reemplaza la columna
 	dic = dict(meta[["Codi_Contaminant","Desc_Contaminant"]].values)
-	print(dic)
-	#medidas["CODI_CONTAMINANT"] = medidas["CODI_CONTAMINANT"].replace('nan', np.nan).fillna(0)
-	test = medidas["CODI_CONTAMINANT"]
-	print(set(test))
-	print(medidas["CODI_CONTAMINANT"])
 	medidas["CONTAMINANTE"] = medidas["CODI_CONTAMINANT"].replace(dic)
 	return medidas
 
@@ -111,7 +106,7 @@ def add_festivos_findes(df):
         # Extraemos el formato fecha en string de cara al merge con el dataframe
         aux_fecha.append(str(dates[i]).split(' ')[0])
     
-        # Cuantificamos el fia de la semana que es finde 
+        # Cuantificamos el dia de la semana que es finde 
         if dates[i].day_name() == 'Saturday' or dates[i].day_name() == 'Sunday':
             aux_finde.append(1)
         else:
