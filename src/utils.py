@@ -107,6 +107,5 @@ def add_festivos_findes(df):
       findes.append(dic_findes.get(fecha))
 
   df["findes"]=findes
-  df = df.drop(columns= ['CODI_PROVINCIA', 'PROVINCIA', 'CODI_MUNICIPI', 'MUNICIPI','ANY', 'MES', 'DIA'])
 
   return df
