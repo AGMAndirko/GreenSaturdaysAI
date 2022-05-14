@@ -5,7 +5,7 @@ import numpy as np
 import seaborn as sns
 import geopandas as gpd
 import matplotlib.pyplot as plt
-
+import folium as fl
 
 def basic_bargraph(medidas): 
 	"""
@@ -44,3 +44,30 @@ def mapas_medidas():
 	gdf5.plot(ax=axes[1][1], column='Rang', legend=True)
 	gdf6.plot(ax=axes[1][2], column='Rang', legend=True)
 	f.savefig("../viz/mapas_medidas.pdf", bbox_inches='tight')
+
+# Path de notebook
+def mapa_estaciones():
+	"""
+	Bibliografía:
+	https://python-visualization.github.io/folium/quickstart.html#Getting-Started
+	https://e-archivo.uc3m.es/bitstream/handle/10016/31974/TFG_Isabel-Maria_San-Jose_Garcia.pdf?sequence=1
+	https://python-visualization.github.io/folium/modules.html
+	https://www.kaggle.com/code/cheyenneamoroso/drawing-geojson-barcelona/notebook
+	"""
+	s = fl.Map(location=[41.390205, 2.154007],
+	           zoom_start=13)
+	data = pd.read_csv('/content/2021_qualitat_aire_estacions.csv')
+	uno = data.loc[0]
+	uno
+	data.iloc[9]
+	data.Estacio.value_counts()
+	for i in range(50):
+	  # Guardamos el nombre de la estación
+	  num = data.Estacio[i]
+	  tooltip = 'Número de estación: '+ str(num)
+	  popup = 'Estación: '+ str(num)
+	  # Asignamos al mapa los atributos de la estación y su ubicación
+	  fl.Marker([data.Latitud[i], data.Longitud[i]], popup = popup, tooltip = tooltip).add_to(s)
+
+	# Visualización del mapa con las estaciones
+	s
