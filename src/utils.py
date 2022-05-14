@@ -31,7 +31,7 @@ def join_mapas():
 
 def mediciones_unif(ruta1, ruta2, ruta3):
 	'''
-	Leemos y unificamos el dataseet de contaminantes con los datos de las estaciones y descripción de contaminante:
+	Leemos y unificamos el dataset de contaminantes con los datos de las estaciones y descripción de contaminante:
 	'''
 	#Leemos los csv y convertimos a dataframe saltando las líneas que no tengan el mismo formato:
 
@@ -52,15 +52,15 @@ def mediciones_unif(ruta1, ruta2, ruta3):
 
 	return df_21
 
-def integratemetadata():
+def integratemetadata(ruta1, ruta2):
 	"""
 	integratemetadata() arregla el problema de que en las medidas de 2020-21 los contaminantes salen por código en vez de por nombre propio.
 	devuelve una copia de las medidas de 2020-2021 con una columna nueva (CONTAMINANTE) con el nombre del contaminante
 	"""
-	medidas_str = "../datasets/medidas/2020-21.csv"
+	medidas_str = ruta1
 	medidas = pd.read_csv(medidas_str)
 	
-	meta = "../datasets/meta/qualitat_aire_contaminants.csv"
+	meta = ruta2
 	meta = pd.read_csv(meta)
 
 	# crea diccionario con código de contaminante y nombres, reemplaza la columna
