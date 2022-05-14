@@ -57,10 +57,10 @@ def integratemetadata():
 	integratemetadata() arregla el problema de que en las medidas de 2020-21 los contaminantes salen por código en vez de por nombre propio.
 	devuelve una copia de las medidas de 2020-2021 con una columna nueva (CONTAMINANTE) con el nombre del contaminante
 	"""
-	medidas_str = "2020-21.csv"
+	medidas_str = "../datasets/medidas/2020-21.csv"
 	medidas = pd.read_csv(medidas_str)
 	
-	meta = "qualitat_aire_contaminants.csv"
+	meta = "../datasets/meta/qualitat_aire_contaminants.csv"
 	meta = pd.read_csv(meta)
 
 	# crea diccionario con código de contaminante y nombres, reemplaza la columna
@@ -97,7 +97,6 @@ def add_festivos_findes(df):
 
     df['festivo'] = 100
     df['festivo'] = df['fecha'].apply(lambda x: 1 if x in festivos else 0)
-
     h = df.fecha.unique()
 
     inicio = pd.datetime.strptime('01/01/2020', '%d/%m/%Y')
@@ -107,16 +106,29 @@ def add_festivos_findes(df):
 
     aux_finde = []
     aux_fecha = []
+    
     for i in range(len(dates)):
-    # Extraemos el formato fecha en string de cara al merge con el dataframe
-    aux_fecha.append(str(dates[i]).split(' ')[0])
-    # Cuantificamos el fia de la semana que es finde 
-    if dates[i].day_name() == 'Saturday' or dates[i].day_name() == 'Sunday':
-        aux_finde.append(1)
-    else:
-        aux_finde.append(0)
-  # Comprobamos que tienen la misma longitud
+        # Extraemos el formato fecha en string de cara al merge con el dataframe
+        aux_fecha.append(str(dates[i]).split(' ')[0])
+    
+        # Cuantificamos el fia de la semana que es finde 
+        if dates[i].day_name() == 'Saturday' or dates[i].day_name() == 'Sunday':
+            aux_finde.append(1)
+        else:
+            aux_finde.append(0)
+
+    # Comprobamos que tienen la misma longitud
     dic_findes = dict(zip(aux_fecha , aux_finde))
-…
-    df = df.drop(columns= ['CODI_PROVINCIA', 'PROVINCIA', 'CODI_MUNICIPI', 'MUNICIPI','ANY', 'MES', 'DIA'])
+ 
+    df['fecha'] = df['fecha'].apply(convert_fecha)
+    
+    findes = []
+    for i in range(len(df.fecha)):
+        # Obtenemos la fecha
+        fecha = df.fecha[i]
+        findes.append(dic_findes.get(fecha))
+
+    df["findes"]=findes
+    #df = df.drop(columns= ['CODI_PROVINCIA', 'PROVINCIA', 'CODI_MUNICIPI', 'MUNICIPI','ANY', 'MES', 'DIA'])
     return df  
+  
