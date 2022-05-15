@@ -5,54 +5,55 @@ import numpy as np
 import datetime as dt
 
 def join_mapas():
-	"""
-	join_mapas() genera un único csv para los csvs de /maps
-	Return: un único csv con dos columnas extra para diferenciar:
-		- Año
-		- Contaminante
-	"""
-	maps_path = "../datasets/maps/"
-	anyo = ['2018', '2019']
-	contaminante = ['no2', 'pm10', 'pm2-5']
+    """
+    join_mapas() genera un único csv para los csvs de /maps
+    Return: un único csv con dos columnas extra para diferenciar:
+        - Año
+        - Contaminante
+    """
+    maps_path = "../datasets/maps/"
+    anyo = ['2018', '2019']
+    contaminante = ['no2', 'pm10', 'pm2-5']
 
-	final = pd.DataFrame()
-	
-	for i in anyo:
-		for k in contaminante:
-			path = maps_path+i+"/"+i+"_tramer_"+k+"_mapa_qualitat_aire_bcn.csv"
-			df = pd.read_csv(path)
-			df['año'] = i
-			df['contaminante'] = k
-			final = final.append(df)
+    final = pd.DataFrame()
 
-	path = maps_path+"mapas_qualitat_aire_bcn.csv"
-	final.to_csv(path)
-	return final
+    for i in anyo:
+        for k in contaminante:
+            path = maps_path+i+"/"+i+"_tramer_"+k+"_mapa_qualitat_aire_bcn.csv"
+            df = pd.read_csv(path)
+            df['año'] = i
+            df['contaminante'] = k
+            final = final.append(df)
+
+    path = maps_path+"mapas_qualitat_aire_bcn.csv"
+    final.to_csv(path)
+    return final
 
 def mediciones_unif():
 
-	'''
-	Leemos y unificamos el dataseet de contaminantes con los datos de las estaciones y descripción de contaminante:
-	'''
+    '''
+    Leemos y unificamos el dataseet de contaminantes con los datos de las estaciones y descripción de contaminante:
+    '''
 
-	#Leemos los csv y convertimos a dataframe saltando las líneas que no tengan el mismo formato:
+    #Leemos los csv y convertimos a dataframe saltando las líneas que no tengan el mismo formato:
 
-	df_21 = pd.read_csv("../datasets/medidas/"+"2020-21.csv")
-	df_estaciones_21 = pd.read_csv("../datasets/estaciones/2021/"+"2021_qualitat_aire_estacions.csv")
-	df_contaminantes = pd.read_csv("../datasets/meta/"+"qualitat_aire_contaminants.csv")
+    df_21 = pd.read_csv("../datasets/medidas/"+"2020-21.csv")
+    df_estaciones_21 = pd.read_csv("../datasets/estaciones/2021/"+"2021_qualitat_aire_estacions.csv")
+    df_contaminantes = pd.read_csv("../datasets/meta/"+"qualitat_aire_contaminants.csv")
 
-	#Unificamos dataframes y eliminamos las columnas que no aportan información:
-	df_21 = df_21.drop(["CODI_PROVINCIA", "PROVINCIA", "CODI_MUNICIPI", "MUNICIPI"], axis=1)
-	df_estaciones_21 = df_estaciones_21.drop(["codi_eoi","Nom_districte","Codi_barri","zqa","Codi_districte","Clas_1"], axis=1)
+    #Unificamos dataframes y eliminamos las columnas que no aportan información:
+    df_21 = df_21.drop(["CODI_PROVINCIA", "PROVINCIA", "CODI_MUNICIPI", "MUNICIPI"], axis=1)
+    df_estaciones_21 = df_estaciones_21.drop(["codi_eoi","Nom_districte","Codi_barri","zqa","Codi_districte","Clas_1","Codi_Contaminant"], axis=1)
+    df_estaciones_21 = df_estaciones_21.drop_duplicates()
 
-	#Limpiamos y unificamos con descripción de estaciones el df del 21:
-	df_21 = df_21.merge(df_estaciones_21, how='left', left_on="ESTACIO", right_on='Estacio')
+    #Limpiamos y unificamos con descripción de estaciones el df del 21:
+    df_21 = df_21.merge(df_estaciones_21, how='left', left_on="ESTACIO", right_on='Estacio')
 
-	#Sustituimos los contaminantes por sus descripciones:
-	df_21 = df_21.merge(df_contaminantes, how='left', left_on="CODI_CONTAMINANT", right_on='Codi_Contaminant')
-	df_21 = df_21.drop(["CODI_CONTAMINANT","Unitats"],axis=1)
+    #Sustituimos los contaminantes por sus descripciones:
+    df_21 = df_21.merge(df_contaminantes, how='left', left_on="CODI_CONTAMINANT", right_on='Codi_Contaminant')
+    df_21 = df_21.drop(["CODI_CONTAMINANT","Unitats"],axis=1)
 
-	return df_21
+    return df_21
 
 def convert_fecha(cadena):
   '''
@@ -69,16 +70,25 @@ def convert_fecha(cadena):
   return aaaa + '-' + mm + '-' + dd 
 
 def add_festivos_findes(df):
-
-  # Creamos una columna que determuine las fecha en las que existia el covid
-  df["covid"] = 0
   # Creamos una columna con las fechas
   df["fecha"] = df[["DIA", "MES", "ANY"]].astype(str).agg('/'.join, axis = 1)
-  festivos = ["1/1/2018","6/1/2018","30/3/2018","2/4/2018","1/5/2018","21/5/2018","15/8/2018","11/9/2018","24/9/2018","12/10/2018","1/11/2018","6/12/2018","8/12/2018","25/12/2018","26/12/2018","1/1/2019","6/1/2019","19/4/2019","22/4/2019","1/5/20…/9/2019","24/9/2019","12/10/2019","1/11/2019","6/12/2019","8/12/2019","25/12/2019","26/12/2019","1/1/2020","6/1/2020","10/4/2020","13/4/2020","1/5/2020","1/6/2020","24/6/2020","15/8/2020","11/9/2020","24/9/2020","12/10/2020","8/12/2020","25/12/2020","26/12/2020","1/1/2021","6/1/2021","2/4/2021","5/4/2021","1/5/2021","24/6/2021","11/9/2021","12/10/2021","1/11/2021","6/12/2021","8/12/2021","25/12/2021"]
+  df = df.drop(["DIA", "MES", "ANY"],axis=1)
 
+  # Creamos una columna que determine las fecha en las que había confinamiento
+  df["confinamiento"] = 0
+  confi = pd.date_range(start="15/3/2020", end="21/6/2020", freq="D")
+  df["confinamiento"] = df["fecha"].apply(lambda x: 1 if x in confi else 0)
+
+  # Añadimos los festivos
+  festivos = ["1/1/2018", "6/1/2018", "30/3/2018", "2/4/2018", "1/5/2018", "21/5/2018", "15/8/2018", "11/9/2018",
+              "24/9/2018", "12/10/2018", "1/11/2018", "6/12/2018", "8/12/2018", "25/12/2018", "26/12/2018", "1/1/2019",
+              "6/1/2019", "19/4/2019", "22/4/2019", "1/5/20…/9/2019", "24/9/2019", "12/10/2019", "1/11/2019",
+              "6/12/2019", "8/12/2019", "25/12/2019", "26/12/2019", "1/1/2020", "6/1/2020", "10/4/2020", "13/4/2020",
+              "1/5/2020", "1/6/2020", "24/6/2020", "15/8/2020", "11/9/2020", "24/9/2020", "12/10/2020", "8/12/2020",
+              "25/12/2020", "26/12/2020", "1/1/2021", "6/1/2021", "2/4/2021", "5/4/2021", "1/5/2021", "24/6/2021",
+              "11/9/2021", "12/10/2021", "1/11/2021", "6/12/2021", "8/12/2021", "25/12/2021"]
   df['festivo'] = 100
   df['festivo'] = df['fecha'].apply(lambda x: 1 if x in festivos else 0)
-  h = df.fecha.unique()
 
   inicio = pd.datetime.strptime('01/01/2020', '%d/%m/%Y')
   fin = pd.datetime.strptime('31/12/2021', '%d/%m/%Y')
