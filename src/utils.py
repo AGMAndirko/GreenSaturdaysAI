@@ -82,14 +82,17 @@ def convert_fecha(cadena):
     return aaaa + '-' + mm + '-' + dd 
 
 def add_festivos_findes(df):
-    """
-    """
-    # Creamos una columna que determuine las fecha en las que existia el covid
-    df["covid"] = 0
-    # Creamos una columna con las fechas
-    df["fecha"] = df[["DIA", "MES", "ANY"]].astype(str).agg('/'.join, axis = 1)
-    festivos = ["1/1/2018","6/1/2018","30/3/2018","2/4/2018","1/5/2018","21/5/2018","15/8/2018","11/9/2018","24/9/2018","12/10/2018","1/11/2018","6/12/2018","8/12/2018","25/12/2018","26/12/2018","1/1/2019","6/1/2019","19/4/2019","22/4/2019","1/5/20…/9/2019","24/9/2019","12/10/2019","1/11/2019","6/12/2019","8/12/2019","25/12/2019","26/12/2019","1/1/2020","6/1/2020","10/4/2020","13/4/2020","1/5/2020","1/6/2020","24/6/2020","15/8/2020","11/9/2020","24/9/2020","12/10/2020","8/12/2020","25/12/2020","26/12/2020","1/1/2021","6/1/2021","2/4/2021","5/4/2021","1/5/2021","24/6/2021","11/9/2021","12/10/2021","1/11/2021","6/12/2021","8/12/2021","25/12/2021"]
+    #Introducimos fecha y eliminamos subcolumnas
+    df["fecha"] = df[["DIA", "MES", "ANY"]].astype(str).agg('/'.join, axis=1)
+    df = df.drop(["DIA", "MES", "ANY"],axis=1)
 
+    # Creamos una columna que determuine las fecha en las que había confinamiento
+    df["confinamiento"] = 0
+    confi = pd.date_range(start="15/3/2020", end="21/6/2020", freq="D")
+    df['confinamiento'] = df['fecha'].apply(lambda x: 1 if x in confi else 0)
+
+    #Aplicamos los festivos y los fines de semana
+    festivos = ["1/1/2018","6/1/2018","30/3/2018","2/4/2018","1/5/2018","21/5/2018","15/8/2018","11/9/2018","24/9/2018","12/10/2018","1/11/2018","6/12/2018","8/12/2018","25/12/2018","26/12/2018","1/1/2019","6/1/2019","19/4/2019","22/4/2019","1/5/20…/9/2019","24/9/2019","12/10/2019","1/11/2019","6/12/2019","8/12/2019","25/12/2019","26/12/2019","1/1/2020","6/1/2020","10/4/2020","13/4/2020","1/5/2020","1/6/2020","24/6/2020","15/8/2020","11/9/2020","24/9/2020","12/10/2020","8/12/2020","25/12/2020","26/12/2020","1/1/2021","6/1/2021","2/4/2021","5/4/2021","1/5/2021","24/6/2021","11/9/2021","12/10/2021","1/11/2021","6/12/2021","8/12/2021","25/12/2021"]
     df['festivo'] = 100
     df['festivo'] = df['fecha'].apply(lambda x: 1 if x in festivos else 0)
     h = df.fecha.unique()
@@ -124,7 +127,6 @@ def add_festivos_findes(df):
         findes.append(dic_findes.get(fecha))
 
     df["findes"]=findes
-    #df = df.drop(columns= ['CODI_PROVINCIA', 'PROVINCIA', 'CODI_MUNICIPI', 'MUNICIPI','ANY', 'MES', 'DIA'])
     return df  
   
 
