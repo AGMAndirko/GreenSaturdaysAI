@@ -35,8 +35,9 @@ import warnings
 
 #Llamada al df
 # ==============================================================================
-df = utils.mediciones_unif()
+df = utils.mediciones_unif("../datasets/medidas/", "../datasets/estaciones/2021/", "../datasets/meta/")
 df = utils.add_festivos_findes(df)
+df
 
 
 
