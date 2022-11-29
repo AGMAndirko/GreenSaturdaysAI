@@ -21,11 +21,8 @@ Se organiza en subcarpetas:
 # Bases de datos de target de predicción:
 https://opendata-ajuntament.barcelona.cat/data/es/dataset/culturailleure-parcsjardins
 
-# Consejos:
-- Modelar festivos y fines de semana 
-- Manifestaciones
-- Densidad de población
-- Añadir Variable confinamiento 
+# Presentación
+La presentación de este proyecto está añadida como `slides.html` - en caso de problemas, se puede visualizar también [aquí](https://andirko.eu/slides.html#1).
 
 ## Licencia
 Todos los datos están compartidos bajo [licencia CC 4.0](https://creativecommons.org/licenses/by/4.0/)
